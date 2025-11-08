@@ -34,12 +34,9 @@ export const useAdmin = () => {
       const { data: { user }, error } = await supabase.auth.getUser();
 
       if (error) {
-        if (error.message.includes('Refresh Token') || error.message.includes('Auth session missing')) {
-          setIsAdmin(false);
-          setLoading(false);
-          return;
-        }
-        throw error;
+        setIsAdmin(false);
+        setLoading(false);
+        return;
       }
 
       if (!user) {
@@ -51,7 +48,6 @@ export const useAdmin = () => {
       setUser(user);
       setIsAdmin(true);
     } catch (error: any) {
-      console.error('Error in checkAuthStatus:', error?.message);
       setIsAdmin(false);
       setLoading(false);
     }
