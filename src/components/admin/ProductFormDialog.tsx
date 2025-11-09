@@ -35,7 +35,6 @@ export const ProductFormDialog = ({ open, onClose, product, categories }: Produc
     price: '',
     stock: '',
     category_id: '',
-    discount: '',
     image_url: '',
   });
   const [imageFile, setImageFile] = useState<File | null>(null);
@@ -49,7 +48,6 @@ export const ProductFormDialog = ({ open, onClose, product, categories }: Produc
         price: product.price?.toString() || '',
         stock: product.stock?.toString() || '0',
         category_id: product.category_id || '',
-        discount: product.discount?.toString() || '',
         image_url: product.image_url || '',
       });
       setImagePreview(product.image_url || '');
@@ -60,7 +58,6 @@ export const ProductFormDialog = ({ open, onClose, product, categories }: Produc
         price: '',
         stock: '0',
         category_id: '',
-        discount: '',
         image_url: '',
       });
       setImagePreview('');
@@ -112,7 +109,6 @@ export const ProductFormDialog = ({ open, onClose, product, categories }: Produc
         price: parseFloat(formData.price),
         stock: parseInt(formData.stock) || 0,
         category_id: formData.category_id || null,
-        discount: formData.discount ? parseFloat(formData.discount) : null,
         image_url: imageUrl,
       };
 
@@ -226,19 +222,6 @@ export const ProductFormDialog = ({ open, onClose, product, categories }: Produc
                   ))}
                 </SelectContent>
               </Select>
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="discount">Desconto (%)</Label>
-              <Input
-                id="discount"
-                type="number"
-                step="1"
-                min="0"
-                max="100"
-                value={formData.discount}
-                onChange={(e) => setFormData({ ...formData, discount: e.target.value })}
-              />
             </div>
           </div>
 

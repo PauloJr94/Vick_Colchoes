@@ -73,7 +73,7 @@ const Header = () => {
             </div>
             <div className="flex items-center gap-2">
               <MapPin className="h-3 w-3" />
-              <span className="hidden sm:inline">Garanhuns - PE/ Caruaru - PE</span>
+              <span className="hidden sm:inline">Garanhuns - PE / Caruaru - PE</span>
             </div>
           </div>
         </div>
@@ -110,6 +110,24 @@ const Header = () => {
               className="text-sm font-medium text-foreground hover:text-accent transition-colors"
             >
               Conjuntos
+            </button>
+            <button
+              onClick={() => handleCategoryClick("cabeceiras")}
+              className="text-sm font-medium text-foreground hover:text-accent transition-colors"
+            >
+              Cabeceiras
+            </button>
+            <button
+              onClick={() => handleCategoryClick("travesseiros")}
+              className="text-sm font-medium text-foreground hover:text-accent transition-colors"
+            >
+              Travesseiros
+            </button>
+            <button
+              onClick={() => handleCategoryClick("acessórios")}
+              className="text-sm font-medium text-foreground hover:text-accent transition-colors"
+            >
+              Acessórios
             </button>
             <a href="#contato" className="text-sm font-medium text-foreground hover:text-accent transition-colors">
               Contato

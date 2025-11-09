@@ -1,4 +1,4 @@
-import { Armchair, Box, Package, CloudMoon, BedDouble, Sparkles, Home } from "lucide-react";
+import { Armchair, Box, Package, CloudMoon, BedDouble, Sparkles } from "lucide-react";
 import { useCategoryFilter } from "@/hooks/useCategoryFilter";
 
 const categories = [
@@ -6,10 +6,8 @@ const categories = [
   { name: "Bases", icon: Box, color: "bg-accent/10 hover:bg-accent/20" },
   { name: "Conjuntos", icon: Package, color: "bg-accent/10 hover:bg-accent/20" },
   { name: "Cabeceiras", icon: Armchair, color: "bg-accent/10 hover:bg-accent/20" },
-  { name: "Roupas de Cama", icon: Sparkles, color: "bg-accent/10 hover:bg-accent/20" },
   { name: "Travesseiros", icon: CloudMoon, color: "bg-accent/10 hover:bg-accent/20" },
   { name: "Acessórios", icon: Sparkles, color: "bg-accent/10 hover:bg-accent/20" },
-  { name: "Móveis", icon: Home, color: "bg-accent/10 hover:bg-accent/20" },
 ];
 
 const CategoryIcons = () => {
@@ -22,7 +20,7 @@ const CategoryIcons = () => {
           Encontre o que procura
         </h2>
 
-        <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-6">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6 justify-items-center">
           {categories.map((category, index) => {
             const Icon = category.icon;
             const isSelected = selectedCategory.toLowerCase() === category.name.toLowerCase();
