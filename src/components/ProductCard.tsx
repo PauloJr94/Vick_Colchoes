@@ -24,7 +24,7 @@ const ProductCard = ({
   const navigate = useNavigate();
 
   return (
-    <Card className="group overflow-hidden border border-border hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
+    <Card className="group overflow-hidden border border-border hover:shadow-lg transition-all duration-300 hover:-translate-y-1 flex flex-col h-full">
       <div className="relative aspect-[4/3] overflow-hidden bg-muted">
         <img
           src={image_url || "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=800"}
@@ -33,32 +33,32 @@ const ProductCard = ({
         />
       </div>
 
-      <CardContent className="p-4 space-y-2">
-        <h3 className="font-semibold text-foreground text-lg line-clamp-2 group-hover:text-accent transition-colors">
+      <CardContent className="p-3 md:p-4 space-y-2 flex-1">
+        <h3 className="font-semibold text-foreground text-base md:text-lg line-clamp-2 min-h-[2.75rem] group-hover:text-accent transition-colors">
           {name}
         </h3>
         
         {description && (
-          <p className="text-sm text-muted-foreground line-clamp-2">
+          <p className="hidden md:block text-sm text-muted-foreground line-clamp-2">
             {description}
           </p>
         )}
 
         <div className="space-y-2">
           <div className="flex items-baseline gap-2">
-            <span className="text-2xl font-bold text-foreground">
+            <span className="text-lg md:text-2xl font-bold text-foreground leading-none">
               R$ {price.toFixed(2).replace(".", ",")}
             </span>
           </div>
         </div>
       </CardContent>
 
-      <CardFooter className="p-4 pt-0">
+      <CardFooter className="p-3 pt-0 md:p-4">
         <Button
-          className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-semibold group/btn"
+          className="w-full h-9 text-xs md:h-10 md:text-sm bg-primary hover:bg-primary/90 text-primary-foreground font-semibold group/btn"
           onClick={() => navigate(`/produto/${id}`)}
         >
-          <Eye className="mr-2 h-4 w-4 group-hover/btn:scale-110 transition-transform" />
+          <Eye className="mr-2 h-3.5 w-3.5 md:h-4 md:w-4 group-hover/btn:scale-110 transition-transform" />
           Visualizar Item
         </Button>
       </CardFooter>
