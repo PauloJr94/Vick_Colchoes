@@ -20,12 +20,16 @@ const Footer = () => {
               Qualidade, conforto e durabilidade em colchões, bases e acessórios para o seu descanso perfeito.
             </p>
             <div className="flex gap-3">
-              <Button size="icon" variant="outline" className="bg-primary-foreground/10 border-primary-foreground/20 hover:bg-accent hover:text-accent-foreground" title="WhatsApp">
-                <MessageCircle className="h-4 w-4" />
-              </Button>
-              <Button size="icon" variant="outline" className="bg-primary-foreground/10 border-primary-foreground/20 hover:bg-accent hover:text-accent-foreground" title="Instagram">
-                <Instagram className="h-4 w-4" />
-              </Button>
+              <a href="https://wa.me/5587991018888" target="_blank" rel="noopener noreferrer">
+                <Button size="icon" variant="outline" className="bg-primary-foreground/10 border-primary-foreground/20 hover:bg-accent hover:text-accent-foreground" title="WhatsApp">
+                  <MessageCircle className="h-4 w-4" />
+                </Button>
+              </a>
+              <a href="https://www.instagram.com/vickcolchoes?igsh=YjdlcDA0cXR0anJs" target="_blank" rel="noopener noreferrer">
+                <Button size="icon" variant="outline" className="bg-primary-foreground/10 border-primary-foreground/20 hover:bg-accent hover:text-accent-foreground" title="Instagram">
+                  <Instagram className="h-4 w-4" />
+                </Button>
+              </a>
             </div>
           </div>
 
