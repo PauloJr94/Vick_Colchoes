@@ -16,6 +16,9 @@ const PromoBanner = () => {
           <h2 className="text-4xl md:text-6xl font-bold leading-tight text-white drop-shadow-lg">
             Colchão dos seus Sonhos
           </h2>
+          <p className="text-lg md:text-xl text-white drop-shadow-lg mt-4 max-w-2xl">
+            Condições especiais por tempo limitado! Frete grátis a partir de R$ 300
+          </p>
         </div>
       </div>
     </section>
