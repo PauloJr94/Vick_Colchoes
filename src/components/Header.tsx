@@ -56,18 +56,30 @@ const Header = () => {
 
           {/* Navigation */}
           <nav className="hidden lg:flex items-center gap-6">
-            <a href="#ofertas" className="text-sm font-medium text-foreground hover:text-accent transition-colors">
+            <button
+              onClick={() => handleCategoryClick("all")}
+              className="text-sm font-medium text-foreground hover:text-accent transition-colors"
+            >
               OFERTAS
-            </a>
-            <a href="#colchoes" className="text-sm font-medium text-foreground hover:text-accent transition-colors">
+            </button>
+            <button
+              onClick={() => handleCategoryClick("colchões")}
+              className="text-sm font-medium text-foreground hover:text-accent transition-colors"
+            >
               Colchões
-            </a>
-            <a href="#bases" className="text-sm font-medium text-foreground hover:text-accent transition-colors">
+            </button>
+            <button
+              onClick={() => handleCategoryClick("bases")}
+              className="text-sm font-medium text-foreground hover:text-accent transition-colors"
+            >
               Bases
-            </a>
-            <a href="#conjuntos" className="text-sm font-medium text-foreground hover:text-accent transition-colors">
+            </button>
+            <button
+              onClick={() => handleCategoryClick("conjuntos")}
+              className="text-sm font-medium text-foreground hover:text-accent transition-colors"
+            >
               Conjuntos
-            </a>
+            </button>
             <a href="#contato" className="text-sm font-medium text-foreground hover:text-accent transition-colors">
               Contato
             </a>
