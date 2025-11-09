@@ -1,4 +1,4 @@
-import { User, Menu, MapIn, Phone, Mail, Search } from "lucide-react";
+import { User, Menu, MapPin, Phone, Mail, Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useNavigate, useLocation } from "react-router-dom";
