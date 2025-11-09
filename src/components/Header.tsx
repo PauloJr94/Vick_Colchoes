@@ -19,15 +19,17 @@ const Header = () => {
     setSearchQuery("");
 
     const scrollToProducts = () => {
-      const element = document.getElementById("produtos");
-      if (element) {
-        element.scrollIntoView({ behavior: "smooth" });
-      }
+      setTimeout(() => {
+        const element = document.getElementById("produtos");
+        if (element) {
+          element.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+      }, 100);
     };
 
     if (location.pathname !== "/") {
-      navigate("/");
-      setTimeout(scrollToProducts, 500);
+      navigate("/", { replace: false });
+      setTimeout(scrollToProducts, 800);
     } else {
       scrollToProducts();
     }
