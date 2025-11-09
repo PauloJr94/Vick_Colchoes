@@ -5,7 +5,6 @@ import { Button } from "@/components/ui/button";
 import { ArrowLeft, ShoppingCart } from "lucide-react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import { CategoryFilterProvider } from "@/hooks/useCategoryFilter";
 
 interface Product {
   id: string;
@@ -41,41 +40,48 @@ const ProductDetail = () => {
   const fetchProduct = async (productId: string) => {
     try {
       setLoading(true);
+
+      // Fetch the product
       const { data, error } = await supabase
         .from("products")
-        .select(`
-          *,
-          categories (
-            name
-          ),
-          product_images (
-            id,
-            image_url
-          )
-        `)
+        .select("*")
         .eq("id", productId)
         .single();
 
       if (error) throw error;
 
-      setProduct(data);
+      // Fetch the category if category_id exists
+      let categoryData = null;
+      if (data.category_id) {
+        const { data: catData, error: catError } = await supabase
+          .from("categories")
+          .select("name")
+          .eq("id", data.category_id)
+          .single();
 
+        if (!catError && catData) {
+          categoryData = catData;
+        }
+      }
+
+      // Set product with category
+      const productWithCategory = {
+        ...data,
+        categories: categoryData ? { name: categoryData.name } : null
+      };
+
+      setProduct(productWithCategory);
+
+      // Handle images
       const allImages = [];
       if (data.image_url) {
         allImages.push(data.image_url);
         setSelectedImage(data.image_url);
       }
 
-      if (data.product_images && data.product_images.length > 0) {
-        allImages.push(...data.product_images.map((pi: any) => pi.image_url));
-        if (!data.image_url && data.product_images.length > 0) {
-          setSelectedImage(data.product_images[0].image_url);
-        }
-      }
-
       setImages(allImages);
-    } catch (error) {
-      console.error("Erro ao carregar produto:", error);
+    } catch (error: any) {
+      console.error("Erro ao carregar produto:", error?.message || JSON.stringify(error));
     } finally {
       setLoading(false);
     }
@@ -84,9 +90,7 @@ const ProductDetail = () => {
   if (loading) {
     return (
       <div className="min-h-screen flex flex-col">
-        <CategoryFilterProvider>
-          <Header />
-        </CategoryFilterProvider>
+        <Header />
         <main className="flex-1 flex items-center justify-center">
           <div className="text-center">Carregando...</div>
         </main>
@@ -98,9 +102,7 @@ const ProductDetail = () => {
   if (!product) {
     return (
       <div className="min-h-screen flex flex-col">
-        <CategoryFilterProvider>
-          <Header />
-        </CategoryFilterProvider>
+        <Header />
         <main className="flex-1 flex items-center justify-center">
           <div className="text-center">Produto não encontrado</div>
         </main>
@@ -111,14 +113,12 @@ const ProductDetail = () => {
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
-      <CategoryFilterProvider>
-        <Header />
-      </CategoryFilterProvider>
-      <main className="flex-1 container mx-auto px-4 py-8">
+      <Header />
+      <main className="flex-1 container mx-auto px-4 py-8 relative z-0">
         <Button
           variant="ghost"
           onClick={() => navigate("/")}
-          className="mb-6 flex items-center gap-2"
+          className="mb-6 flex items-center gap-2 cursor-pointer"
         >
           <ArrowLeft className="h-4 w-4" />
           Voltar

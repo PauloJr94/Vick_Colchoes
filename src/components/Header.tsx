@@ -1,20 +1,57 @@
-import { User, Menu, MapPin, Phone, Mail } from "lucide-react";
+import { User, Menu, MapPin, Phone, Mail, Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { useNavigate } from "react-router-dom";
+import { Input } from "@/components/ui/input";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useAdmin } from "@/hooks/useAdmin";
 import { useCategoryFilter } from "@/hooks/useCategoryFilter";
+import { useProductSearchContext } from "@/hooks/useProductSearchContext";
 import logo from "@/assets/logo.jpg";
 
 const Header = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const { isAdmin } = useAdmin();
   const { setSelectedCategory } = useCategoryFilter();
+  const { searchQuery, setSearchQuery } = useProductSearchContext();
 
   const handleCategoryClick = (category: string) => {
     setSelectedCategory(category.toLowerCase());
-    const element = document.getElementById("produtos");
-    if (element) {
-      element.scrollIntoView({ behavior: "smooth" });
+    setSearchQuery("");
+
+    const scrollToProducts = () => {
+      setTimeout(() => {
+        const element = document.getElementById("produtos");
+        if (element) {
+          element.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+      }, 100);
+    };
+
+    if (location.pathname !== "/") {
+      navigate("/", { replace: false });
+      setTimeout(scrollToProducts, 800);
+    } else {
+      scrollToProducts();
+    }
+  };
+
+  const handleSearchKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      const scrollToProducts = () => {
+        setTimeout(() => {
+          const element = document.getElementById("produtos");
+          if (element) {
+            element.scrollIntoView({ behavior: "smooth", block: "start" });
+          }
+        }, 100);
+      };
+
+      if (location.pathname !== "/") {
+        navigate("/", { replace: false });
+        setTimeout(scrollToProducts, 800);
+      } else {
+        scrollToProducts();
+      }
     }
   };
 
@@ -57,12 +94,6 @@ const Header = () => {
           {/* Navigation */}
           <nav className="hidden lg:flex items-center gap-6">
             <button
-              onClick={() => handleCategoryClick("all")}
-              className="text-sm font-medium text-foreground hover:text-accent transition-colors"
-            >
-              OFERTAS
-            </button>
-            <button
               onClick={() => handleCategoryClick("colchões")}
               className="text-sm font-medium text-foreground hover:text-accent transition-colors"
             >
@@ -99,6 +130,21 @@ const Header = () => {
             <Button variant="ghost" size="icon" className="lg:hidden">
               <Menu className="h-5 w-5" />
             </Button>
+          </div>
+        </div>
+
+        {/* Search Bar */}
+        <div className="mt-4">
+          <div className="relative">
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+            <Input
+              type="text"
+              placeholder="Buscar por nome ou categoria..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              onKeyDown={handleSearchKeyDown}
+              className="pl-10 pr-4 py-2 w-full"
+            />
           </div>
         </div>
       </div>

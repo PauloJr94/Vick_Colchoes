@@ -1,8 +1,9 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import ProductCard from "./ProductCard";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useCategoryFilter } from "@/hooks/useCategoryFilter";
+import { useProductSearchContext } from "@/hooks/useProductSearchContext";
 
 interface Product {
   id: string;
@@ -22,10 +23,11 @@ const ProductList = () => {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const { selectedCategory } = useCategoryFilter();
+  const { searchQuery } = useProductSearchContext();
 
   useEffect(() => {
     fetchProducts();
-  }, [selectedCategory]);
+  }, []);
 
   const fetchProducts = async () => {
     try {
@@ -79,15 +81,38 @@ const ProductList = () => {
     }
   };
 
-  const filteredProducts = selectedCategory === "all"
-    ? products
-    : products.filter((product) => {
-        if (!product.categories?.name) return false;
-        const match = product.categories.name.toLowerCase() === selectedCategory.toLowerCase();
-        return match;
+  const filteredProducts = useMemo(() => {
+    let result = products;
+
+    // Apply search filter
+    if (searchQuery.trim()) {
+      const query = searchQuery.toLowerCase().trim();
+      result = result.filter((product) => {
+        const name = product.name.toLowerCase();
+        const description = (product.description || '').toLowerCase();
+        const category = (product.categories?.name || '').toLowerCase();
+
+        return (
+          name.includes(query) ||
+          description.includes(query) ||
+          category.includes(query)
+        );
       });
+    }
+
+    // Apply category filter
+    if (selectedCategory !== "all") {
+      result = result.filter((product) => {
+        if (!product.categories?.name) return false;
+        return product.categories.name.toLowerCase() === selectedCategory.toLowerCase();
+      });
+    }
+
+    return result;
+  }, [products, searchQuery, selectedCategory]);
 
   console.log("selectedCategory:", selectedCategory);
+  console.log("searchQuery:", searchQuery);
   console.log("filteredProducts:", filteredProducts);
 
   if (loading) {
@@ -121,7 +146,7 @@ const ProductList = () => {
         {filteredProducts.length === 0 ? (
           <div className="text-center py-12">
             <p className="text-muted-foreground text-lg">
-              Nenhum produto encontrado nesta categoria.
+              Nenhum produto encontrado{searchQuery ? " com os termos de busca" : " nesta categoria"}.
             </p>
           </div>
         ) : (

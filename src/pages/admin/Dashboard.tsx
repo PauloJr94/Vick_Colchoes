@@ -1,13 +1,14 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import { useAdmin } from '@/hooks/useAdmin';
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from '@/components/ui/sheet';
 import { ProductTable } from '@/components/admin/ProductTable';
 import { ProductFormDialog } from '@/components/admin/ProductFormDialog';
 import { toast } from '@/hooks/use-toast';
-import { LogOut, Plus, Settings, Home, Menu } from 'lucide-react';
+import { LogOut, Plus, Settings, Home, Menu, Search } from 'lucide-react';
 
 const Dashboard = () => {
   const { isAdmin, loading, user } = useAdmin();
@@ -18,6 +19,7 @@ const Dashboard = () => {
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [editingProduct, setEditingProduct] = useState<any>(null);
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
 
   useEffect(() => {
     if (!loading && !isAdmin) {
@@ -128,6 +130,25 @@ const Dashboard = () => {
     fetchProducts();
   };
 
+  const filteredProducts = useMemo(() => {
+    if (!searchQuery.trim()) {
+      return products;
+    }
+
+    const query = searchQuery.toLowerCase().trim();
+    return products.filter((product) => {
+      const name = product.name.toLowerCase();
+      const description = (product.description || '').toLowerCase();
+      const category = (product.categories?.name || '').toLowerCase();
+
+      return (
+        name.includes(query) ||
+        description.includes(query) ||
+        category.includes(query)
+      );
+    });
+  }, [products, searchQuery]);
+
   if (loading || !isAdmin) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -142,7 +163,7 @@ const Dashboard = () => {
         <div className="container mx-auto px-4 py-4 flex justify-between items-center">
           <div>
             <h1 className="text-2xl font-bold">Painel Administrativo</h1>
-            <p className="text-sm text-muted-foreground">V Colchões - Gestão de Produtos</p>
+            <p className="text-sm text-muted-foreground">Vick Colchões - Gestão de Produtos</p>
           </div>
           <Button
             variant="outline"
@@ -198,21 +219,34 @@ const Dashboard = () => {
       </Sheet>
 
       <main className="container mx-auto px-4 py-8">
-        <div className="flex justify-between items-center mb-6">
-          <div>
+        <div className="mb-6">
+          <div className="mb-4">
             <h2 className="text-xl font-semibold">Produtos</h2>
             <p className="text-sm text-muted-foreground">
               Gerencie o catálogo de produtos da loja
             </p>
           </div>
-          <Button onClick={() => setIsFormOpen(true)}>
-            <Plus className="w-4 h-4 mr-2" />
-            Novo Produto
-          </Button>
+
+          <div className="flex items-center justify-between gap-3">
+            <div className="relative max-w-xs flex-1">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+              <Input
+                type="text"
+                placeholder="Buscar por nome ou categoria..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="pl-10 pr-4 py-2 w-full"
+              />
+            </div>
+            <Button onClick={() => setIsFormOpen(true)}>
+              <Plus className="w-4 h-4 mr-2" />
+              Novo Produto
+            </Button>
+          </div>
         </div>
 
         <ProductTable
-          products={products}
+          products={filteredProducts}
           loading={loadingProducts}
           onEdit={handleEdit}
           onDelete={handleDelete}
