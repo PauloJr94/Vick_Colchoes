@@ -37,13 +37,18 @@ const Header = () => {
     if (e.key === "Enter") {
       if (location.pathname !== "/") {
         navigate("/");
-      }
-      setTimeout(() => {
+        setTimeout(() => {
+          const element = document.getElementById("produtos");
+          if (element) {
+            element.scrollIntoView({ behavior: "smooth" });
+          }
+        }, 300);
+      } else {
         const element = document.getElementById("produtos");
         if (element) {
           element.scrollIntoView({ behavior: "smooth" });
         }
-      }, 100);
+      }
     }
   };
 
