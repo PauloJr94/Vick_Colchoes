@@ -20,7 +20,7 @@ const CategoryIcons = () => {
           Encontre o que procura
         </h2>
 
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 sm:gap-5 md:gap-6 justify-items-center">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-3 gap-4 sm:gap-5 md:gap-6 justify-items-center">
           {categories.map((category, index) => {
             const Icon = category.icon;
             const isSelected = selectedCategory.toLowerCase() === category.name.toLowerCase();
