@@ -33,33 +33,34 @@ const ProductCard = ({
         />
       </div>
 
-      <CardContent className="p-3 md:p-4 space-y-2 flex-1">
-        <h3 className="font-semibold text-foreground text-base md:text-lg line-clamp-2 min-h-[2.75rem] group-hover:text-accent transition-colors">
+      <CardContent className="p-2 sm:p-3 md:p-4 space-y-2 flex-1">
+        <h3 className="font-semibold text-foreground text-sm sm:text-base md:text-lg line-clamp-2 min-h-[2.5rem] sm:min-h-[2.75rem] group-hover:text-accent transition-colors">
           {name}
         </h3>
-        
+
         {description && (
-          <p className="hidden md:block text-sm text-muted-foreground line-clamp-2">
+          <p className="hidden md:block text-xs sm:text-sm text-muted-foreground line-clamp-2">
             {description}
           </p>
         )}
 
         <div className="space-y-2">
           <div className="flex items-baseline gap-2">
-            <span className="text-lg md:text-2xl font-bold text-foreground leading-none">
+            <span className="text-base sm:text-lg md:text-2xl font-bold text-foreground leading-none">
               R$ {price.toFixed(2).replace(".", ",")}
             </span>
           </div>
         </div>
       </CardContent>
 
-      <CardFooter className="p-3 pt-0 md:p-4">
+      <CardFooter className="p-2 pt-0 sm:p-3 md:p-4">
         <Button
-          className="w-full h-9 text-xs md:h-10 md:text-sm bg-primary hover:bg-primary/90 text-primary-foreground font-semibold group/btn"
+          className="w-full h-8 text-xs sm:h-9 md:h-10 sm:text-xs md:text-sm bg-primary hover:bg-primary/90 text-primary-foreground font-semibold group/btn"
           onClick={() => navigate(`/produto/${id}`)}
         >
-          <Eye className="mr-2 h-3.5 w-3.5 md:h-4 md:w-4 group-hover/btn:scale-110 transition-transform" />
-          Visualizar Item
+          <Eye className="mr-1.5 h-3 w-3 sm:mr-2 sm:h-3.5 sm:w-3.5 md:h-4 md:w-4 group-hover/btn:scale-110 transition-transform" />
+          <span className="hidden sm:inline">Visualizar Item</span>
+          <span className="sm:hidden">Ver</span>
         </Button>
       </CardFooter>
     </Card>
