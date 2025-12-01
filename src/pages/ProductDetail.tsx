@@ -37,6 +37,12 @@ const ProductDetail = () => {
     }
   }, [id]);
 
+  useEffect(() => {
+    if (product) {
+      window.scrollTo(0, 0);
+    }
+  }, [product]);
+
   const fetchProduct = async (productId: string) => {
     try {
       setLoading(true);

@@ -117,15 +117,15 @@ const ProductList = () => {
 
   if (loading) {
     return (
-      <section className="py-16">
+      <section className="py-8 sm:py-12 md:py-16">
         <div className="container mx-auto px-4">
-          <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
+          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4 md:gap-5 lg:gap-6">
             {[...Array(8)].map((_, i) => (
-              <div key={i} className="space-y-4">
+              <div key={i} className="space-y-3 sm:space-y-4">
                 <Skeleton className="aspect-[4/3] w-full" />
-                <Skeleton className="h-6 w-3/4" />
-                <Skeleton className="h-4 w-full" />
-                <Skeleton className="h-8 w-1/2" />
+                <Skeleton className="h-5 sm:h-6 w-3/4" />
+                <Skeleton className="h-3 sm:h-4 w-full" />
+                <Skeleton className="h-7 sm:h-8 w-1/2" />
               </div>
             ))}
           </div>
@@ -135,22 +135,22 @@ const ProductList = () => {
   }
 
   return (
-    <section className="py-16" id="produtos">
+    <section className="py-8 sm:py-12 md:py-16" id="produtos">
       <div className="container mx-auto px-4">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold text-foreground">
+        <div className="text-center mb-8 sm:mb-10 md:mb-12">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-foreground">
             Nossos Produtos
           </h2>
         </div>
 
         {filteredProducts.length === 0 ? (
           <div className="text-center py-12">
-            <p className="text-muted-foreground text-lg">
+            <p className="text-muted-foreground text-base sm:text-lg">
               Nenhum produto encontrado{searchQuery ? " com os termos de busca" : " nesta categoria"}.
             </p>
           </div>
         ) : (
-          <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
+          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4 md:gap-5 lg:gap-6">
             {filteredProducts.map((product) => (
               <ProductCard
                 key={product.id}

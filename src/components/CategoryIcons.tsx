@@ -14,13 +14,13 @@ const CategoryIcons = () => {
   const { selectedCategory, setSelectedCategory } = useCategoryFilter();
 
   return (
-    <section className="py-16 bg-secondary/30">
+    <section className="py-8 sm:py-12 md:py-16 bg-secondary/30">
       <div className="container mx-auto px-4">
-        <h2 className="text-3xl md:text-4xl font-bold text-center mb-12 text-foreground">
+        <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-center mb-8 sm:mb-10 md:mb-12 text-foreground">
           Encontre o que procura
         </h2>
 
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6 justify-items-center">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-3 gap-4 sm:gap-5 md:gap-6 justify-items-center">
           {categories.map((category, index) => {
             const Icon = category.icon;
             const isSelected = selectedCategory.toLowerCase() === category.name.toLowerCase();
@@ -29,12 +29,12 @@ const CategoryIcons = () => {
               <button
                 key={index}
                 onClick={() => setSelectedCategory(category.name.toLowerCase())}
-                className="flex flex-col items-center gap-3 group cursor-pointer"
+                className="flex flex-col items-center gap-2 sm:gap-3 group cursor-pointer"
               >
-                <div className={`${isSelected ? 'bg-accent text-accent-foreground' : category.color} w-20 h-20 md:w-24 md:h-24 rounded-full flex items-center justify-center transition-all duration-300 group-hover:scale-110 shadow-sm group-hover:shadow-md`}>
-                  <Icon className={`h-10 w-10 md:h-12 md:w-12 ${isSelected ? 'text-accent-foreground' : 'text-accent'}`} />
+                <div className={`${isSelected ? 'bg-accent text-accent-foreground' : category.color} w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 rounded-full flex items-center justify-center transition-all duration-300 group-hover:scale-110 shadow-sm group-hover:shadow-md`}>
+                  <Icon className={`h-8 w-8 sm:h-10 sm:w-10 md:h-12 md:w-12 ${isSelected ? 'text-accent-foreground' : 'text-accent'}`} />
                 </div>
-                <span className={`text-xs md:text-sm font-medium text-center transition-colors ${isSelected ? 'text-accent font-semibold' : 'text-foreground group-hover:text-accent'}`}>
+                <span className={`text-xs sm:text-sm font-medium text-center transition-colors ${isSelected ? 'text-accent font-semibold' : 'text-foreground group-hover:text-accent'}`}>
                   {category.name}
                 </span>
               </button>
