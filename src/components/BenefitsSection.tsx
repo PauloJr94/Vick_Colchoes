@@ -10,13 +10,6 @@ const benefits = [
     subtext: "Confira a Política de Entrega",
   },
   {
-    icon: Tag,
-    title: "Descrições",
-    description: "+ 0x sem juros",
-    subtext: "Só nesta semana",
-    footnote: "*Em itens selecionados",
-  },
-  {
     icon: CreditCard,
     title: "Parcelamento em até 21x",
     description: "Confira a Política de Pagamento",
