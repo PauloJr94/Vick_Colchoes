@@ -33,8 +33,10 @@ const ProductDetail = () => {
 
   useEffect(() => {
     if (id) {
-      window.scrollTo(0, 0);
       fetchProduct(id);
+      requestAnimationFrame(() => {
+        window.scrollTo(0, 0);
+      });
     }
   }, [id]);
 
