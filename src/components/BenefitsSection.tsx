@@ -97,27 +97,27 @@ const BenefitsSection = () => {
               return (
                 <div
                   key={index}
-                  className="flex-[0_0_100%] px-4 py-6 flex flex-col items-center text-center space-y-3 min-w-0"
+                  className="flex-[0_0_100%] px-4 py-5 flex items-start gap-3 min-w-0"
                 >
-                  <div className="p-3 bg-accent/10 rounded-lg">
-                    <Icon className="h-6 w-6 text-accent" />
+                  <div className="p-2 bg-accent/10 rounded-lg flex-shrink-0">
+                    <Icon className="h-5 w-5 text-accent" />
                   </div>
-                  <div>
-                    <h3 className="font-semibold text-sm text-foreground">
+                  <div className="flex-1 text-left">
+                    <h3 className="font-semibold text-xs text-foreground leading-tight">
                       {benefit.title}
                     </h3>
                     {benefit.description && (
-                      <p className="text-xs text-muted-foreground mt-1">
+                      <p className="text-xs text-muted-foreground mt-0.5 leading-tight">
                         {benefit.description}
                       </p>
                     )}
                     {benefit.subtext && (
-                      <p className="text-xs text-muted-foreground mt-1">
+                      <p className="text-xs text-muted-foreground mt-0.5 leading-tight">
                         {benefit.subtext}
                       </p>
                     )}
                     {benefit.footnote && (
-                      <p className="text-xs text-muted-foreground/70 mt-1 italic">
+                      <p className="text-xs text-muted-foreground/70 mt-0.5 italic leading-tight">
                         {benefit.footnote}
                       </p>
                     )}
@@ -129,12 +129,12 @@ const BenefitsSection = () => {
         </div>
 
         {/* Carousel Dots Indicators */}
-        <div className="flex justify-center gap-2 mt-4 pb-2">
+        <div className="flex justify-center gap-2 mt-3 pb-2">
           {benefits.map((_, index) => (
             <button
               key={index}
               onClick={() => emblaApi?.scrollToIndex(index)}
-              className="h-2 w-2 rounded-full bg-accent/40 transition-all hover:bg-accent/60"
+              className="h-1.5 w-1.5 rounded-full bg-accent/40 transition-all hover:bg-accent/60"
               aria-label={`Go to slide ${index + 1}`}
             />
           ))}
