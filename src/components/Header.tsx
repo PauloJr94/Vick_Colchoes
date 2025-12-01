@@ -182,16 +182,16 @@ const Header = () => {
         </div>
 
         {/* Search Bar */}
-        <div className="mt-4">
+        <div className="mt-2 sm:mt-3 md:mt-4">
           <div className="relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+            <Search className="absolute left-2 sm:left-3 top-1/2 transform -translate-y-1/2 h-3.5 w-3.5 sm:h-4 sm:w-4 text-muted-foreground" />
             <Input
               type="text"
               placeholder="Buscar por nome ou categoria..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               onKeyDown={handleSearchKeyDown}
-              className="pl-10 pr-4 py-2 w-full"
+              className="pl-8 sm:pl-10 pr-3 sm:pr-4 py-1.5 sm:py-2 w-full text-sm sm:text-base"
             />
           </div>
         </div>
