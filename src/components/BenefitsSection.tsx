@@ -51,33 +51,33 @@ const BenefitsSection = () => {
   }, [emblaApi]);
 
   return (
-    <section className="bg-secondary/10 py-6 sm:py-8 md:py-10">
+    <section className="bg-secondary/10 py-6 sm:py-8 md:py-8">
       {/* Desktop Grid */}
       <div className="hidden md:block container mx-auto px-4">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-4">
           {benefits.map((benefit, index) => {
             const Icon = benefit.icon;
             return (
-              <div key={index} className="flex flex-col items-center text-center space-y-3 py-4 px-2">
-                <div className="p-3 bg-accent/10 rounded-lg">
-                  <Icon className="h-6 w-6 md:h-7 md:w-7 text-accent" />
+              <div key={index} className="flex items-start gap-4 py-4 px-3">
+                <div className="p-2 bg-accent/10 rounded-lg flex-shrink-0">
+                  <Icon className="h-5 w-5 md:h-6 md:w-6 text-accent" />
                 </div>
-                <div>
-                  <h3 className="font-semibold text-sm md:text-base text-foreground">
+                <div className="flex-1 text-left">
+                  <h3 className="font-semibold text-xs md:text-sm text-foreground leading-tight">
                     {benefit.title}
                   </h3>
                   {benefit.description && (
-                    <p className="text-xs md:text-sm text-muted-foreground mt-1">
+                    <p className="text-xs text-muted-foreground mt-0.5 leading-tight">
                       {benefit.description}
                     </p>
                   )}
                   {benefit.subtext && (
-                    <p className="text-xs text-muted-foreground mt-1">
+                    <p className="text-xs text-muted-foreground mt-0.5 leading-tight">
                       {benefit.subtext}
                     </p>
                   )}
                   {benefit.footnote && (
-                    <p className="text-xs text-muted-foreground/70 mt-1 italic">
+                    <p className="text-xs text-muted-foreground/70 mt-0.5 italic leading-tight">
                       {benefit.footnote}
                     </p>
                   )}
