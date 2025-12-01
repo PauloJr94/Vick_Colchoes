@@ -1,5 +1,3 @@
-import { useEffect, useRef, useState } from "react";
-import useEmblaCarousel from "embla-carousel-react";
 import { Truck, Tag, CreditCard, Ruler } from "lucide-react";
 
 const benefits = [
