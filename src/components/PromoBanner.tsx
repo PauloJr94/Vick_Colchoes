@@ -2,7 +2,7 @@ import heroBanner from "@/assets/hero-banner.jpg";
 
 const PromoBanner = () => {
   return (
-    <section className="relative w-full h-64 sm:h-80 md:h-96 lg:h-[450px] overflow-hidden rounded-xl sm:rounded-2xl mx-auto my-6 sm:my-8">
+    <section className="relative w-full h-64 sm:h-80 md:h-96 lg:h-[450px] overflow-hidden rounded-none sm:rounded-xl md:rounded-2xl mx-auto my-6 sm:my-8">
       <div className="absolute inset-0">
         <img
           src={heroBanner}
