@@ -7,19 +7,30 @@ export const useAdmin = () => {
   const [user, setUser] = useState<any>(null);
 
   useEffect(() => {
+    const checkAuth = async () => {
+      try {
+        const { data: { session } } = await supabase.auth.getSession();
+        setUser(session?.user ?? null);
+        setIsAdmin(!!session?.user);
+      } catch (error) {
+        console.error('Error checking auth:', error);
+        setIsAdmin(false);
+        setUser(null);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    checkAuth();
+
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
       try {
         setUser(session?.user ?? null);
-        if (session?.user) {
-          setIsAdmin(true);
-        } else {
-          setIsAdmin(false);
-        }
+        setIsAdmin(!!session?.user);
       } catch (error) {
         console.error('Error in auth state change:', error);
         setIsAdmin(false);
-      } finally {
-        setLoading(false);
+        setUser(null);
       }
     });
 
