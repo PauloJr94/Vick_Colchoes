@@ -33,7 +33,7 @@ const BenefitsSection = () => {
   return (
     <section className="bg-secondary/10 py-3 sm:py-4 md:py-5">
       <div className="container mx-auto px-3 sm:px-4">
-        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 md:gap-4">
+        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-2 sm:gap-2 md:gap-3">
           {benefits.map((benefit, index) => {
             const Icon = benefit.icon;
             return (
