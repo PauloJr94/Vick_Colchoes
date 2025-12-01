@@ -39,13 +39,13 @@ export const ProductTable = ({ products, loading, onEdit, onDelete }: ProductTab
       <Table className="w-full">
         <TableHeader>
           <TableRow>
-            <TableHead>Imagem</TableHead>
-            <TableHead>Nome</TableHead>
-            <TableHead>Descrição</TableHead>
-            <TableHead>Preço</TableHead>
-            <TableHead>Estoque</TableHead>
-            <TableHead>Categoria</TableHead>
-            <TableHead className="text-right">Ações</TableHead>
+            <TableHead className="w-20 min-w-20">Imagem</TableHead>
+            <TableHead className="min-w-32">Nome</TableHead>
+            <TableHead className="min-w-40">Descrição</TableHead>
+            <TableHead className="min-w-24">Preço</TableHead>
+            <TableHead className="min-w-24">Estoque</TableHead>
+            <TableHead className="min-w-28">Categoria</TableHead>
+            <TableHead className="text-right min-w-20">Ações</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
