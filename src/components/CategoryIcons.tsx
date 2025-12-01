@@ -29,12 +29,12 @@ const CategoryIcons = () => {
               <button
                 key={index}
                 onClick={() => setSelectedCategory(category.name.toLowerCase())}
-                className="flex flex-col items-center gap-3 group cursor-pointer"
+                className="flex flex-col items-center gap-2 sm:gap-3 group cursor-pointer"
               >
-                <div className={`${isSelected ? 'bg-accent text-accent-foreground' : category.color} w-20 h-20 md:w-24 md:h-24 rounded-full flex items-center justify-center transition-all duration-300 group-hover:scale-110 shadow-sm group-hover:shadow-md`}>
-                  <Icon className={`h-10 w-10 md:h-12 md:w-12 ${isSelected ? 'text-accent-foreground' : 'text-accent'}`} />
+                <div className={`${isSelected ? 'bg-accent text-accent-foreground' : category.color} w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 rounded-full flex items-center justify-center transition-all duration-300 group-hover:scale-110 shadow-sm group-hover:shadow-md`}>
+                  <Icon className={`h-8 w-8 sm:h-10 sm:w-10 md:h-12 md:w-12 ${isSelected ? 'text-accent-foreground' : 'text-accent'}`} />
                 </div>
-                <span className={`text-xs md:text-sm font-medium text-center transition-colors ${isSelected ? 'text-accent font-semibold' : 'text-foreground group-hover:text-accent'}`}>
+                <span className={`text-xs sm:text-sm font-medium text-center transition-colors ${isSelected ? 'text-accent font-semibold' : 'text-foreground group-hover:text-accent'}`}>
                   {category.name}
                 </span>
               </button>
