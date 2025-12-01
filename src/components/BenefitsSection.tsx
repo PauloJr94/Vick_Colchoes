@@ -29,24 +29,6 @@ const benefits = [
 ];
 
 const BenefitsSection = () => {
-  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true });
-  const autoplayIntervalRef = useRef<NodeJS.Timeout | null>(null);
-
-  useEffect(() => {
-    if (!emblaApi) return;
-
-    const autoplay = () => {
-      emblaApi.scrollNext();
-    };
-
-    autoplayIntervalRef.current = setInterval(autoplay, 4000);
-
-    return () => {
-      if (autoplayIntervalRef.current) {
-        clearInterval(autoplayIntervalRef.current);
-      }
-    };
-  }, [emblaApi]);
 
   return (
     <section className="bg-secondary/10 py-6 sm:py-8 md:py-8">
