@@ -95,7 +95,7 @@ const Login = () => {
             <Lock className="w-6 h-6 text-primary" />
           </div>
           <h1 className="text-2xl font-bold">Painel Administrativo</h1>
-          <p className="text-muted-foreground">V Colchões</p>
+          <p className="text-muted-foreground">Vick Colchões</p>
         </div>
 
         <form onSubmit={isLogin ? handleLogin : handleRegister} className="space-y-4">

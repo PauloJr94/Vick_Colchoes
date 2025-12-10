@@ -73,8 +73,14 @@ const ProductList = () => {
       }
 
       setProducts(productsWithCategories);
-    } catch (error) {
-      console.error("Erro ao carregar produtos:", error);
+    } catch (error: any) {
+      console.error("Erro ao carregar produtos:", {
+        message: error?.message,
+        code: error?.code,
+        details: error?.details,
+        hint: error?.hint,
+        fullError: error
+      });
       setProducts([]);
     } finally {
       setLoading(false);
