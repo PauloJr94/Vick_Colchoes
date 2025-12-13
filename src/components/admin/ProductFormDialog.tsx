@@ -74,15 +74,33 @@ export const ProductFormDialog = ({ open, onClose, product, categories }: Produc
   }, [product, open]);
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      setImageFile(file);
+    const files = Array.from(e.target.files || []);
+    const totalImages = imagePreviews.length + files.length;
+
+    if (totalImages > 5) {
+      toast({
+        title: 'Limite de imagens',
+        description: 'Você pode adicionar no máximo 5 imagens.',
+        variant: 'destructive',
+      });
+      return;
+    }
+
+    const newFiles = files.slice(0, 5 - imagePreviews.length);
+    setImageFiles([...imageFiles, ...newFiles]);
+
+    newFiles.forEach((file) => {
       const reader = new FileReader();
       reader.onloadend = () => {
-        setImagePreview(reader.result as string);
+        setImagePreviews((prev) => [...prev, reader.result as string]);
       };
       reader.readAsDataURL(file);
-    }
+    });
+  };
+
+  const removeImage = (index: number) => {
+    setImagePreviews((prev) => prev.filter((_, i) => i !== index));
+    setImageFiles((prev) => prev.filter((_, i) => i !== index));
   };
 
   const uploadImage = async (file: File): Promise<string> => {
