@@ -37,8 +37,8 @@ export const ProductFormDialog = ({ open, onClose, product, categories }: Produc
     category_id: '',
     image_url: '',
   });
-  const [imageFile, setImageFile] = useState<File | null>(null);
-  const [imagePreview, setImagePreview] = useState<string>('');
+  const [imageFiles, setImageFiles] = useState<File[]>([]);
+  const [imagePreviews, setImagePreviews] = useState<string[]>([]);
 
   useEffect(() => {
     if (product) {
