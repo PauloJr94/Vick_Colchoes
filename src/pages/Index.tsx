@@ -31,7 +31,7 @@ const Index = () => {
       <main>
         <PromoBanner />
         <BenefitsSection />
-        <CategoryIcons />
+        {!showContact && <CategoryIcons />}
         {showContact ? <ContactSection /> : <ProductList />}
       </main>
       <Footer />
