@@ -82,14 +82,25 @@ export const ProductFormDialog = ({ open, onClose, product, categories }: Produc
     const fileName = `${Math.random()}.${fileExt}`;
     const filePath = `${fileName}`;
 
-    const { error: uploadError } = await supabase.storage
-      .from('products')
-      .upload(filePath, file);
+    try {
+      const { error: uploadError, data } = await supabase.storage
+        .from('products')
+        .upload(filePath, file, {
+          cacheControl: '3600',
+          upsert: true,
+        });
 
-    if (uploadError) throw uploadError;
+      if (uploadError) {
+        console.error('Upload error details:', uploadError);
+        throw new Error(`Erro ao fazer upload: ${uploadError.message}`);
+      }
 
-    const { data } = supabase.storage.from('products').getPublicUrl(filePath);
-    return data.publicUrl;
+      const { data: publicUrl } = supabase.storage.from('products').getPublicUrl(filePath);
+      return publicUrl.publicUrl;
+    } catch (error: any) {
+      console.error('Upload failed:', error);
+      throw error;
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
