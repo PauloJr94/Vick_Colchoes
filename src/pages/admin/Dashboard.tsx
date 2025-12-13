@@ -137,6 +137,9 @@ const Dashboard = () => {
         description: error.message,
         variant: 'destructive',
       });
+    } finally {
+      setDeleteConfirmOpen(false);
+      setDeletingProductId(null);
     }
   };
 
