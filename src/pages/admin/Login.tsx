@@ -140,23 +140,11 @@ const Login = () => {
           </Button>
         </form>
 
-        <div className="text-center space-y-2">
-          <Button
-            variant="link"
-            onClick={() => {
-              setIsLogin(!isLogin);
-              setEmail('');
-              setPassword('');
-              setName('');
-            }}
-            className="text-sm w-full"
-          >
-            {isLogin ? 'Não tem conta? Cadastre-se' : 'Já tem conta? Faça login'}
-          </Button>
+        <div className="text-center">
           <Button
             variant="link"
             onClick={() => navigate('/')}
-            className="text-sm w-full"
+            className="text-sm"
           >
             Voltar para o site
           </Button>
