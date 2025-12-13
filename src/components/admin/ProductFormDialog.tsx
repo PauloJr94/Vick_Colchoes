@@ -18,7 +18,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { toast } from '@/hooks/use-toast';
-import { Upload } from 'lucide-react';
+import { Upload, X } from 'lucide-react';
 
 interface ProductFormDialogProps {
   open: boolean;
