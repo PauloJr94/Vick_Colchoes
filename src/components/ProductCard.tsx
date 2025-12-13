@@ -23,6 +23,23 @@ const ProductCard = ({
 }: ProductCardProps) => {
   const navigate = useNavigate();
 
+  const getFirstImage = (imageUrl?: string) => {
+    if (!imageUrl) {
+      return "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=800";
+    }
+
+    try {
+      const parsed = JSON.parse(imageUrl);
+      if (Array.isArray(parsed) && parsed.length > 0 && typeof parsed[0] === "string") {
+        return parsed[0];
+      }
+    } catch {
+      // If not JSON, return as is
+    }
+
+    return imageUrl;
+  };
+
   return (
     <Card
       className="group overflow-hidden border border-border hover:shadow-lg transition-all duration-300 hover:-translate-y-1 flex flex-col h-full cursor-pointer"
@@ -30,9 +47,13 @@ const ProductCard = ({
     >
       <div className="relative aspect-[4/3] overflow-hidden bg-muted">
         <img
-          src={image_url || "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=800"}
+          src={getFirstImage(image_url)}
           alt={name}
           className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+          onError={(e) => {
+            const target = e.target as HTMLImageElement;
+            target.src = "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=800";
+          }}
         />
       </div>
 
