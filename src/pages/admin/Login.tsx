@@ -52,21 +52,7 @@ const Login = () => {
           <p className="text-muted-foreground">Vick Colchões</p>
         </div>
 
-        <form onSubmit={isLogin ? handleLogin : handleRegister} className="space-y-4">
-          {!isLogin && (
-            <div className="space-y-2">
-              <Label htmlFor="name">Nome</Label>
-              <Input
-                id="name"
-                type="text"
-                placeholder="Seu nome"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                required
-              />
-            </div>
-          )}
-
+        <form onSubmit={handleLogin} className="space-y-4">
           <div className="space-y-2">
             <Label htmlFor="email">E-mail</Label>
             <Input
@@ -92,7 +78,7 @@ const Login = () => {
           </div>
 
           <Button type="submit" className="w-full" disabled={loading}>
-            {loading ? (isLogin ? 'Entrando...' : 'Cadastrando...') : (isLogin ? 'Entrar' : 'Cadastrar')}
+            {loading ? 'Entrando...' : 'Entrar'}
           </Button>
         </form>
 
