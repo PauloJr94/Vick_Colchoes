@@ -270,30 +270,48 @@ export const ProductFormDialog = ({ open, onClose, product, categories }: Produc
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="image">Imagem do Produto</Label>
+            <Label htmlFor="image">Imagens do Produto (até 5)</Label>
             <div className="flex items-center gap-4">
               <Button
                 type="button"
                 variant="outline"
                 onClick={() => document.getElementById('image')?.click()}
+                disabled={imagePreviews.length >= 5}
               >
                 <Upload className="w-4 h-4 mr-2" />
-                Escolher Imagem
+                Adicionar Imagem
               </Button>
+              <span className="text-sm text-muted-foreground">
+                {imagePreviews.length}/5 imagens
+              </span>
               <Input
                 id="image"
                 type="file"
                 accept="image/*"
+                multiple
                 onChange={handleImageChange}
                 className="hidden"
               />
             </div>
-            {imagePreview && (
-              <img
-                src={imagePreview}
-                alt="Preview"
-                className="mt-2 w-32 h-32 object-cover rounded"
-              />
+            {imagePreviews.length > 0 && (
+              <div className="mt-4 grid grid-cols-5 gap-4">
+                {imagePreviews.map((preview, index) => (
+                  <div key={index} className="relative">
+                    <img
+                      src={preview}
+                      alt={`Preview ${index + 1}`}
+                      className="w-24 h-24 object-cover rounded"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => removeImage(index)}
+                      className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1 hover:bg-red-600"
+                    >
+                      <X className="w-4 h-4" />
+                    </button>
+                  </div>
+                ))}
+              </div>
             )}
           </div>
 
