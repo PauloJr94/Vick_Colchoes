@@ -73,13 +73,26 @@ const ProductDetail = () => {
 
       setProduct(productWithCategory);
 
-      // Handle images
-      const allImages = [];
+      // Handle images - support both JSON array and string formats
+      let allImages: string[] = [];
       if (data.image_url) {
-        allImages.push(data.image_url);
-        setSelectedImage(data.image_url);
+        try {
+          // Try to parse as JSON array
+          const parsed = JSON.parse(data.image_url);
+          if (Array.isArray(parsed)) {
+            allImages = parsed.filter((url: any) => typeof url === 'string' && url.length > 0);
+          } else {
+            allImages = [data.image_url];
+          }
+        } catch {
+          // If not JSON, treat as single image string
+          allImages = [data.image_url];
+        }
       }
 
+      if (allImages.length > 0) {
+        setSelectedImage(allImages[0]);
+      }
       setImages(allImages);
     } catch (error: any) {
       console.error("Erro ao carregar produto:", error?.message || JSON.stringify(error));
@@ -128,30 +141,39 @@ const ProductDetail = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {/* Image Gallery */}
           <div className="space-y-4">
-            <div className="aspect-[4/3] bg-muted rounded-lg overflow-hidden">
+            <div className="aspect-[4/3] bg-muted rounded-lg overflow-hidden flex items-center justify-center">
               <img
                 src={selectedImage}
                 alt={product.name}
                 className="w-full h-full object-cover"
+                onError={(e) => {
+                  const target = e.target as HTMLImageElement;
+                  target.src = "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=800";
+                }}
               />
             </div>
 
             {images.length > 1 && (
-              <div className="grid grid-cols-4 gap-2">
-                {images.map((image, index) => (
+              <div className="grid grid-cols-5 gap-2">
+                {images.slice(0, 5).map((image, index) => (
                   <button
                     key={index}
                     onClick={() => setSelectedImage(image)}
                     className={`aspect-square rounded-lg overflow-hidden border-2 transition-all ${
                       selectedImage === image
-                        ? "border-accent"
+                        ? "border-accent ring-2 ring-accent"
                         : "border-border hover:border-accent/50"
                     }`}
+                    title={`Imagem ${index + 1}`}
                   >
                     <img
                       src={image}
                       alt={`${product.name} ${index + 1}`}
                       className="w-full h-full object-cover"
+                      onError={(e) => {
+                        const target = e.target as HTMLImageElement;
+                        target.src = "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=800";
+                      }}
                     />
                   </button>
                 ))}

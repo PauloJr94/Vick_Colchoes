@@ -5,6 +5,15 @@ import { useAdmin } from '@/hooks/useAdmin';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from '@/components/ui/sheet';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from '@/components/ui/alert-dialog';
 import { ProductTable } from '@/components/admin/ProductTable';
 import { ProductFormDialog } from '@/components/admin/ProductFormDialog';
 import { toast } from '@/hooks/use-toast';
@@ -20,6 +29,8 @@ const Dashboard = () => {
   const [editingProduct, setEditingProduct] = useState<any>(null);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+  const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
+  const [deletingProductId, setDeletingProductId] = useState<string | null>(null);
 
   useEffect(() => {
     if (!loading && !isAdmin) {
@@ -98,14 +109,19 @@ const Dashboard = () => {
     setIsFormOpen(true);
   };
 
-  const handleDelete = async (productId: string) => {
-    if (!confirm('Tem certeza que deseja excluir este produto?')) return;
+  const handleDeleteClick = (productId: string) => {
+    setDeletingProductId(productId);
+    setDeleteConfirmOpen(true);
+  };
+
+  const handleDeleteConfirm = async () => {
+    if (!deletingProductId) return;
 
     try {
       const { error } = await supabase
         .from('products')
         .delete()
-        .eq('id', productId);
+        .eq('id', deletingProductId);
 
       if (error) throw error;
 
@@ -121,6 +137,9 @@ const Dashboard = () => {
         description: error.message,
         variant: 'destructive',
       });
+    } finally {
+      setDeleteConfirmOpen(false);
+      setDeletingProductId(null);
     }
   };
 
@@ -249,7 +268,7 @@ const Dashboard = () => {
           products={filteredProducts}
           loading={loadingProducts}
           onEdit={handleEdit}
-          onDelete={handleDelete}
+          onDelete={handleDeleteClick}
         />
 
         <ProductFormDialog
@@ -258,6 +277,26 @@ const Dashboard = () => {
           product={editingProduct}
           categories={categories}
         />
+
+        <AlertDialog open={deleteConfirmOpen} onOpenChange={setDeleteConfirmOpen}>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>Excluir Produto</AlertDialogTitle>
+              <AlertDialogDescription>
+                Tem certeza que deseja excluir este produto? Esta ação não pode ser desfeita.
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <div className="flex gap-3 justify-end">
+              <AlertDialogCancel>Cancelar</AlertDialogCancel>
+              <AlertDialogAction
+                onClick={handleDeleteConfirm}
+                className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+              >
+                Excluir
+              </AlertDialogAction>
+            </div>
+          </AlertDialogContent>
+        </AlertDialog>
       </main>
     </div>
   );

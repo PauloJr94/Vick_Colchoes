@@ -18,7 +18,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { toast } from '@/hooks/use-toast';
-import { Upload } from 'lucide-react';
+import { Upload, X } from 'lucide-react';
 
 interface ProductFormDialogProps {
   open: boolean;
@@ -37,8 +37,8 @@ export const ProductFormDialog = ({ open, onClose, product, categories }: Produc
     category_id: '',
     image_url: '',
   });
-  const [imageFile, setImageFile] = useState<File | null>(null);
-  const [imagePreview, setImagePreview] = useState<string>('');
+  const [imageFiles, setImageFiles] = useState<File[]>([]);
+  const [imagePreviews, setImagePreviews] = useState<string[]>([]);
 
   useEffect(() => {
     if (product) {
@@ -50,7 +50,15 @@ export const ProductFormDialog = ({ open, onClose, product, categories }: Produc
         category_id: product.category_id || '',
         image_url: product.image_url || '',
       });
-      setImagePreview(product.image_url || '');
+
+      try {
+        const images = typeof product.image_url === 'string' && product.image_url.startsWith('[')
+          ? JSON.parse(product.image_url)
+          : product.image_url ? [product.image_url] : [];
+        setImagePreviews(Array.isArray(images) ? images : []);
+      } catch {
+        setImagePreviews(product.image_url ? [product.image_url] : []);
+      }
     } else {
       setFormData({
         name: '',
@@ -60,21 +68,39 @@ export const ProductFormDialog = ({ open, onClose, product, categories }: Produc
         category_id: '',
         image_url: '',
       });
-      setImagePreview('');
+      setImagePreviews([]);
     }
-    setImageFile(null);
+    setImageFiles([]);
   }, [product, open]);
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      setImageFile(file);
+    const files = Array.from(e.target.files || []);
+    const totalImages = imagePreviews.length + files.length;
+
+    if (totalImages > 5) {
+      toast({
+        title: 'Limite de imagens',
+        description: 'Você pode adicionar no máximo 5 imagens.',
+        variant: 'destructive',
+      });
+      return;
+    }
+
+    const newFiles = files.slice(0, 5 - imagePreviews.length);
+    setImageFiles([...imageFiles, ...newFiles]);
+
+    newFiles.forEach((file) => {
       const reader = new FileReader();
       reader.onloadend = () => {
-        setImagePreview(reader.result as string);
+        setImagePreviews((prev) => [...prev, reader.result as string]);
       };
       reader.readAsDataURL(file);
-    }
+    });
+  };
+
+  const removeImage = (index: number) => {
+    setImagePreviews((prev) => prev.filter((_, i) => i !== index));
+    setImageFiles((prev) => prev.filter((_, i) => i !== index));
   };
 
   const uploadImage = async (file: File): Promise<string> => {
@@ -82,14 +108,25 @@ export const ProductFormDialog = ({ open, onClose, product, categories }: Produc
     const fileName = `${Math.random()}.${fileExt}`;
     const filePath = `${fileName}`;
 
-    const { error: uploadError } = await supabase.storage
-      .from('products')
-      .upload(filePath, file);
+    try {
+      const { error: uploadError, data } = await supabase.storage
+        .from('PRODUCTS')
+        .upload(filePath, file, {
+          cacheControl: '3600',
+          upsert: true,
+        });
 
-    if (uploadError) throw uploadError;
+      if (uploadError) {
+        console.error('Upload error details:', uploadError);
+        throw new Error(`Erro ao fazer upload: ${uploadError.message}`);
+      }
 
-    const { data } = supabase.storage.from('products').getPublicUrl(filePath);
-    return data.publicUrl;
+      const { data: publicUrl } = supabase.storage.from('PRODUCTS').getPublicUrl(filePath);
+      return publicUrl.publicUrl;
+    } catch (error: any) {
+      console.error('Upload failed:', error);
+      throw error;
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -97,11 +134,18 @@ export const ProductFormDialog = ({ open, onClose, product, categories }: Produc
     setLoading(true);
 
     try {
-      let imageUrl = formData.image_url;
+      let imageUrls: string[] = [];
 
-      if (imageFile) {
-        imageUrl = await uploadImage(imageFile);
+      if (imageFiles.length > 0) {
+        imageUrls = await Promise.all(imageFiles.map((file) => uploadImage(file)));
       }
+
+      const allImageUrls = [
+        ...imagePreviews.filter((preview) => !preview.startsWith('data:')),
+        ...imageUrls,
+      ];
+
+      const imageUrl = allImageUrls.length > 0 ? JSON.stringify(allImageUrls) : formData.image_url;
 
       const productData = {
         name: formData.name,
@@ -226,30 +270,48 @@ export const ProductFormDialog = ({ open, onClose, product, categories }: Produc
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="image">Imagem do Produto</Label>
+            <Label htmlFor="image">Imagens do Produto (até 5)</Label>
             <div className="flex items-center gap-4">
               <Button
                 type="button"
                 variant="outline"
                 onClick={() => document.getElementById('image')?.click()}
+                disabled={imagePreviews.length >= 5}
               >
                 <Upload className="w-4 h-4 mr-2" />
-                Escolher Imagem
+                Adicionar Imagem
               </Button>
+              <span className="text-sm text-muted-foreground">
+                {imagePreviews.length}/5 imagens
+              </span>
               <Input
                 id="image"
                 type="file"
                 accept="image/*"
+                multiple
                 onChange={handleImageChange}
                 className="hidden"
               />
             </div>
-            {imagePreview && (
-              <img
-                src={imagePreview}
-                alt="Preview"
-                className="mt-2 w-32 h-32 object-cover rounded"
-              />
+            {imagePreviews.length > 0 && (
+              <div className="mt-4 grid grid-cols-5 gap-4">
+                {imagePreviews.map((preview, index) => (
+                  <div key={index} className="relative">
+                    <img
+                      src={preview}
+                      alt={`Preview ${index + 1}`}
+                      className="w-24 h-24 object-cover rounded"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => removeImage(index)}
+                      className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1 hover:bg-red-600"
+                    >
+                      <X className="w-4 h-4" />
+                    </button>
+                  </div>
+                ))}
+              </div>
             )}
           </div>
 
