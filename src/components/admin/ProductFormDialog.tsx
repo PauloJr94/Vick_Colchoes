@@ -50,7 +50,15 @@ export const ProductFormDialog = ({ open, onClose, product, categories }: Produc
         category_id: product.category_id || '',
         image_url: product.image_url || '',
       });
-      setImagePreview(product.image_url || '');
+
+      try {
+        const images = typeof product.image_url === 'string' && product.image_url.startsWith('[')
+          ? JSON.parse(product.image_url)
+          : product.image_url ? [product.image_url] : [];
+        setImagePreviews(Array.isArray(images) ? images : []);
+      } catch {
+        setImagePreviews(product.image_url ? [product.image_url] : []);
+      }
     } else {
       setFormData({
         name: '',
@@ -60,9 +68,9 @@ export const ProductFormDialog = ({ open, onClose, product, categories }: Produc
         category_id: '',
         image_url: '',
       });
-      setImagePreview('');
+      setImagePreviews([]);
     }
-    setImageFile(null);
+    setImageFiles([]);
   }, [product, open]);
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
