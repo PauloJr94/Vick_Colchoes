@@ -268,7 +268,7 @@ const Dashboard = () => {
           products={filteredProducts}
           loading={loadingProducts}
           onEdit={handleEdit}
-          onDelete={handleDelete}
+          onDelete={handleDeleteClick}
         />
 
         <ProductFormDialog
