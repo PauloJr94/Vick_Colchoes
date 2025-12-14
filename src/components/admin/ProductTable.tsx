@@ -69,7 +69,7 @@ export const ProductTable = ({ products, loading, onEdit, onDelete }: ProductTab
                 {product.description || '-'}
               </TableCell>
               <TableCell className="p-2 whitespace-nowrap text-sm">
-                R$ {product.price?.toFixed(2).replace('.', ',')}
+                R$ {new Intl.NumberFormat('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(product.price || 0)}
               </TableCell>
               <TableCell className="p-2 whitespace-nowrap">
                 <Badge variant={product.stock > 0 ? 'default' : 'destructive'} className="text-xs">
