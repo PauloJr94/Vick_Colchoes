@@ -129,6 +129,38 @@ export const ProductFormDialog = ({ open, onClose, product, categories }: Produc
     }
   };
 
+  const formatPriceBR = (value: string): string => {
+    const cleaned = value.replace(/\D/g, '');
+    if (!cleaned) return '';
+
+    const padded = cleaned.padStart(3, '0');
+    const integerPart = padded.slice(0, -2) || '0';
+    const decimalPart = padded.slice(-2);
+
+    const formatter = new Intl.NumberFormat('pt-BR', {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    });
+
+    return formatter.format(parseFloat(integerPart + '.' + decimalPart));
+  };
+
+  const parsePriceBR = (value: string): number => {
+    const cleaned = value.replace(/\D/g, '');
+    if (!cleaned) return 0;
+
+    const padded = cleaned.padStart(3, '0');
+    const integerPart = padded.slice(0, -2) || '0';
+    const decimalPart = padded.slice(-2);
+
+    return parseFloat(integerPart + '.' + decimalPart);
+  };
+
+  const handlePriceChange = (value: string) => {
+    const formatted = formatPriceBR(value);
+    setFormData({ ...formData, price: formatted });
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
@@ -150,7 +182,7 @@ export const ProductFormDialog = ({ open, onClose, product, categories }: Produc
       const productData = {
         name: formData.name,
         description: formData.description || null,
-        price: parseFloat(formData.price),
+        price: parsePriceBR(formData.price),
         stock: parseInt(formData.stock) || 0,
         category_id: formData.category_id || null,
         image_url: imageUrl,
